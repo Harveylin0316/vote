@@ -10,7 +10,7 @@ export const mockPolls: Poll[] = [
     maxVotesPerUser: 1,
     creatorId: 'user1',
     creator: {
-      username: '张三',
+      phone: '0912345678',
     },
     createdAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
     totalVotes: 156,
@@ -30,7 +30,7 @@ export const mockPolls: Poll[] = [
     deadline: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000).toISOString(),
     creatorId: 'user2',
     creator: {
-      username: '李四',
+      phone: '0923456789',
     },
     createdAt: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString(),
     totalVotes: 89,
@@ -48,7 +48,7 @@ export const mockPolls: Poll[] = [
     maxVotesPerUser: 1,
     creatorId: 'user3',
     creator: {
-      username: '王五',
+      phone: '0934567890',
     },
     createdAt: new Date(Date.now() - 3 * 60 * 60 * 1000).toISOString(),
     totalVotes: 203,

@@ -1,8 +1,8 @@
-# 投票系统 (Vote System)
+# 投票系統 (Vote System)
 
-一个功能完整的投票系统，支持用户注册登录、创建投票、参与投票和管理员管理功能。
+一個功能完整的投票系統，支援手機號註冊登入、建立投票、參與投票功能。
 
-## 技术栈
+## 技術棧
 
 ### 前端
 - React 18
@@ -11,85 +11,86 @@
 - Tailwind CSS
 - React Router
 
-### 后端
+### 後端
 - Node.js
 - Express
 - TypeScript
 - PostgreSQL
 - Prisma ORM
-- JWT 认证
+- JWT 認證
 
-## 项目结构
+## 項目結構
 
 ```
 Vote/
-├── frontend/                    # 前端项目
+├── frontend/                    # 前端項目（部署到 Netlify）
 │   ├── src/
-│   │   ├── pages/              # 页面组件
-│   │   │   ├── auth/           # 登录注册页面
-│   │   │   ├── home/           # 首页
-│   │   │   └── polls/          # 投票相关页面
-│   │   ├── components/         # 组件
-│   │   │   └── layout/         # 布局组件
-│   │   ├── utils/              # 工具函数
+│   │   ├── pages/              # 頁面組件
+│   │   │   ├── auth/           # 登入註冊頁面
+│   │   │   ├── home/           # 首頁
+│   │   │   └── polls/          # 投票相關頁面
+│   │   ├── components/         # 組件
+│   │   │   └── layout/         # 佈局組件
+│   │   ├── utils/              # 工具函數
 │   │   └── ...
 │   └── package.json
-├── backend/                     # 后端项目
+├── backend/                     # 後端項目（需單獨部署）
 │   ├── src/
 │   │   ├── routes/             # 路由
 │   │   ├── controllers/        # 控制器
-│   │   ├── models/             # 数据模型
-│   │   ├── middleware/         # 中间件
-│   │   └── utils/              # 工具函数
+│   │   ├── middleware/         # 中間件
+│   │   └── utils/              # 工具函數
 │   ├── prisma/
-│   │   └── schema.prisma       # 数据库模型
+│   │   └── schema.prisma       # 數據庫模型
 │   └── package.json
-├── README.md                    # 项目说明
-└── .gitignore                   # Git 忽略文件
+├── netlify.toml                 # Netlify 配置
+└── README.md                    # 項目說明
 ```
 
 ## 功能特性
 
-- ✅ 用户注册和登录
-- ✅ 创建投票（普通用户）
-- ✅ 参与投票（需登录）
-- ✅ 管理员设置（投票规则、用户管理）
-- ✅ 投票结果统计和可视化
+- ✅ 手機號註冊和登入（台灣10碼格式）
+- ✅ 建立投票（普通用戶）
+- ✅ 參與投票（需登入）
+- ✅ 投票結果統計和可視化
+- ✅ 防止重複投票
+- ✅ 繁體中文界面
 
-## 开发指南
+## 開發指南
 
-### 前端开发
+### 前端開發
 ```bash
 cd frontend
 npm install
 npm run dev
 ```
 
-### 后端开发
+### 後端開發
 ```bash
 cd backend
 npm install
-# 创建 .env 文件（参考 env.example.txt）
+# 創建 .env 文件（參考 env.example.txt）
 npm run dev
 ```
 
-### 数据库设置
-1. 确保已安装 PostgreSQL 并创建数据库
+### 數據庫設置
+1. 確保已安裝 PostgreSQL 並創建數據庫
 2. 配置 `backend/.env` 中的 `DATABASE_URL`
-3. 运行迁移：
+3. 運行遷移：
 ```bash
 cd backend
 npx prisma migrate dev
 npx prisma generate
 ```
 
-## 环境变量
+## 環境變量
 
-### 后端 (.env)
+### 後端 (.env)
 ```
 DATABASE_URL="postgresql://user:password@localhost:5432/vote_db"
 JWT_SECRET="your-secret-key"
 PORT=3001
+CORS_ORIGIN="http://localhost:5173"
 ```
 
 ### 前端 (.env)
@@ -97,17 +98,49 @@ PORT=3001
 VITE_API_URL=http://localhost:3001/api
 ```
 
-## 下一步开发
+## 🚀 部署
 
-当前已完成项目基础架构搭建，包括：
-- ✅ 前后端项目初始化
-- ✅ 数据库 Schema 设计
-- ✅ 基础页面框架和路由
-- ✅ API 工具配置
+### Netlify 部署（前端）
 
-接下来需要实现：
-- [ ] 用户认证 API（注册、登录、JWT）
-- [ ] 投票 CRUD API
-- [ ] 前端认证状态管理（Context/Redux）
-- [ ] 投票列表和详情页功能
-- [ ] 管理员功能
+詳細部署指南請參考：[NETLIFY_DEPLOY.md](./NETLIFY_DEPLOY.md)
+
+**快速部署步驟：**
+
+1. 前往 https://app.netlify.com
+2. 連接 GitHub 倉庫 `Harveylin0316/vote`
+3. 配置構建設置：
+   - Base directory: `frontend`
+   - Build command: `npm run build`
+   - Publish directory: `frontend/dist`
+4. 設置環境變量：
+   - `VITE_API_URL` = 你的後端 API 地址
+5. 點擊 "Deploy site"
+
+### 後端部署
+
+後端需要單獨部署到其他平台（Railway、Render、Fly.io 等）。
+
+## 📝 API 端點
+
+### 認證相關
+- `POST /api/auth/register` - 用戶註冊
+- `POST /api/auth/login` - 用戶登入
+- `GET /api/auth/me` - 獲取當前用戶（需要認證）
+
+### 投票相關
+- `GET /api/polls` - 獲取所有投票
+- `GET /api/polls/:id` - 獲取投票詳情
+- `POST /api/polls` - 建立投票（需要認證）
+- `POST /api/polls/:id/vote` - 提交投票（需要認證）
+
+## 🔒 安全功能
+
+- 密碼加密存儲（bcrypt）
+- JWT Token 認證
+- 路由保護（需要認證的接口）
+- 防止重複投票
+- 輸入驗證
+
+## 📄 許可證
+
+ISC
