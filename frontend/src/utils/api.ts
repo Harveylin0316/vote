@@ -1,6 +1,13 @@
 import axios from 'axios'
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001/api'
+// 獲取 API URL，優先使用環境變量
+const API_URL = import.meta.env.VITE_API_URL || 
+  (import.meta.env.DEV ? 'http://localhost:3001/api' : '')
+
+// 如果生產環境沒有設置 API URL，顯示錯誤
+if (!API_URL && !import.meta.env.DEV) {
+  console.error('❌ VITE_API_URL 環境變量未設置！請在 Netlify 環境變量中設置 VITE_API_URL')
+}
 
 const api = axios.create({
   baseURL: API_URL,
