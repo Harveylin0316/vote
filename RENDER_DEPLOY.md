@@ -46,7 +46,7 @@
    - **Branch**: `main`
    - **Root Directory**: `backend` ⚠️ **重要！**
    - **Runtime**: `Node`
-   - **Build Command**: `npm install --legacy-peer-deps && npm run build`
+   - **Build Command**: `NPM_CONFIG_PRODUCTION=false npm install --legacy-peer-deps && npm run build`
    - **Start Command**: `npm start`
    - **Plan**: `Free`（免費方案）
 

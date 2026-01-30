@@ -13,6 +13,9 @@
     "prisma:migrate:deploy": "prisma migrate deploy",
     "prisma:studio": "prisma studio"
   },
+  "engines": {
+    "node": ">=18.0.0"
+  },
   "keywords": ["vote", "poll", "api"],
   "author": "",
   "license": "ISC",
