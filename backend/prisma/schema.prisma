@@ -1,0 +1,87 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  USER
+  ADMIN
+}
+
+enum PollType {
+  SINGLE   // 单选
+  MULTIPLE // 多选
+}
+
+model User {
+  id        String   @id @default(uuid())
+  phone     String   @unique
+  password  String
+  role      UserRole @default(USER)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  createdPolls Poll[] @relation("PollCreator")
+  votes        Vote[]
+
+  @@map("users")
+}
+
+model Poll {
+  id                String   @id @default(uuid())
+  title             String
+  description       String?
+  pollType          PollType @default(SINGLE) @map("poll_type")
+  maxVotesPerUser   Int      @default(1) @map("max_votes_per_user")
+  deadline          DateTime?
+  creatorId         String   @map("creator_id")
+  createdAt         DateTime @default(now()) @map("created_at")
+  updatedAt         DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  creator User   @relation("PollCreator", fields: [creatorId], references: [id], onDelete: Cascade)
+  options Option[]
+  votes   Vote[]
+
+  @@map("polls")
+}
+
+model Option {
+  id        String   @id @default(uuid())
+  pollId    String   @map("poll_id")
+  text      String
+  voteCount Int      @default(0) @map("vote_count")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  poll  Poll   @relation(fields: [pollId], references: [id], onDelete: Cascade)
+  votes Vote[]
+
+  @@map("options")
+}
+
+model Vote {
+  id        String   @id @default(uuid())
+  pollId    String   @map("poll_id")
+  userId    String   @map("user_id")
+  optionId  String   @map("option_id")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  // Relations
+  poll   Poll   @relation(fields: [pollId], references: [id], onDelete: Cascade)
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  option Option @relation(fields: [optionId], references: [id], onDelete: Cascade)
+
+  // 确保同一用户在同一投票中只能对同一选项投一次
+  @@unique([pollId, userId, optionId])
+  @@map("votes")
+}
