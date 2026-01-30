@@ -1,6 +1,7 @@
 import { type ReactNode } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
+import ApiErrorBanner from '../common/ApiErrorBanner'
 
 interface LayoutProps {
   children: ReactNode
@@ -65,6 +66,7 @@ export default function Layout({ children }: LayoutProps) {
         </div>
       </nav>
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <ApiErrorBanner />
         {children}
       </main>
     </div>
