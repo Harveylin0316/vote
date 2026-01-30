@@ -52,19 +52,38 @@
 
 ### 步驟 4：設置環境變量
 
-在 Web Service 設置頁面的 **Environment** 部分，添加：
+**詳細步驟請參考：`RENDER_ENV_VARS.md`**
 
-```
-DATABASE_URL=你的數據庫連接字符串（從步驟 2 複製）
-JWT_SECRET=你的隨機密鑰（例如：my-super-secret-jwt-key-2024）
-CORS_ORIGIN=http://localhost:5173,https://votepractice.netlify.app
-NODE_ENV=production
-PORT=10000
-```
+快速步驟：
+1. 進入 Web Service → **Settings** 標籤
+2. 找到 **Environment Variables** 部分
+3. 點擊 **Add Environment Variable**
+4. 逐一添加以下變量：
 
-**注意**：
-- `DATABASE_URL`：使用步驟 2 複製的 **Internal Database URL**
-- `PORT`：Render 免費方案使用端口 `10000`，但實際上 Render 會自動設置，可以不填
+#### 變量 1：DATABASE_URL
+- **Key**: `DATABASE_URL`
+- **Value**: 從 PostgreSQL 服務複製的 **Internal Database URL**
+  - 前往 PostgreSQL 服務
+  - 找到 **Connection Info** → **Internal Database URL**
+  - 複製完整字符串
+
+#### 變量 2：JWT_SECRET
+- **Key**: `JWT_SECRET`
+- **Value**: 隨機字符串（例如：`my-super-secret-jwt-key-2024`）
+  - 生成方法：在終端運行 `node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"`
+
+#### 變量 3：CORS_ORIGIN
+- **Key**: `CORS_ORIGIN`
+- **Value**: `http://localhost:5173,https://votepractice.netlify.app`
+  - 注意：用逗號分隔，無空格
+
+#### 變量 4：NODE_ENV
+- **Key**: `NODE_ENV`
+- **Value**: `production`
+
+**重要提示**：
+- 環境變量添加後會自動保存
+- 需要重新部署才能生效（Render 會自動觸發）
 
 ### 步驟 5：部署
 
